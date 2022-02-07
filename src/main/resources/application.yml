@@ -1,3 +1,11 @@
 mongo:
   test:
     connectionString: mongodb://localhost:27017/spring_log
+logging:
+  level:
+    org:
+      springframework:
+        data:
+          mongodb:
+            core:
+              MongoTemplate: DEBUG

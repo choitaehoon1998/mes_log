@@ -1,11 +1,12 @@
 package com.broanex.mes_log.repository;
 
 import com.broanex.mes_log.document.Log;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.HashMap;
-import java.util.List;
 
 public interface CustomLogRepository {
 
-	List<Log> findByParam(HashMap<String,String> hashmap);
+	Page<Log> findByParam(HashMap<String,Object> hashmap, Pageable pageable);
 }

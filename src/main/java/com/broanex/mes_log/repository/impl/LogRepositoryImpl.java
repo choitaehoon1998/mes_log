@@ -8,10 +8,16 @@ package com.broanex.mes_log.repository.impl;
 
 import com.broanex.mes_log.document.Log;
 import com.broanex.mes_log.repository.CustomLogRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 
@@ -36,28 +42,35 @@ public class LogRepositoryImpl implements CustomLogRepository {
 	}
 
 	@Override
-	public List<Log> findByParam(HashMap<String, String> hashmap) {
+	public Page<Log> findByParam(HashMap<String, Object> hashmap, Pageable pageable) {
 		Query dynamicQuery = new Query();
-		eqUserName(hashmap.get("userName"), dynamicQuery);
-		eqCompanyCode(hashmap.get("companyCode"), dynamicQuery);
-		eqExceptionClass(hashmap.get("exceptionClass"), dynamicQuery);
-		eqExceptionMessage(hashmap.get("exceptionMessage"), dynamicQuery);
-		eqMethod(hashmap.get("method"), dynamicQuery);
-		eqRequestUri(hashmap.get("requestUri"), dynamicQuery);
-		eqRemoteHost(hashmap.get("remoteHost"), dynamicQuery);
 
-		return mongoTemplate.find(dynamicQuery, Log.class);
+		likeUserName((String) hashmap.get("userName"), dynamicQuery);
+		likeCompanyCode((String) hashmap.get("companyCode"), dynamicQuery);
+		eqExceptionClass((String) hashmap.get("exceptionClass"), dynamicQuery);
+		eqExceptionMessage((String) hashmap.get("exceptionMessage"), dynamicQuery);
+		eqMethod((String) hashmap.get("method"), dynamicQuery);
+		eqRequestUri((String) hashmap.get("requestUri"), dynamicQuery);
+		eqRemoteHost((String) hashmap.get("remoteHost"), dynamicQuery);
+		betweenDate((LocalDate) hashmap.get("startDate"), (LocalDate) hashmap.get("endDate"), dynamicQuery);
+		dynamicQuery.with(pageable);
+
+		List<Log> logList = mongoTemplate.find(dynamicQuery, Log.class);
+		long total = mongoTemplate.count(dynamicQuery, Log.class);
+
+		return new PageImpl<>(logList, pageable, total);
+
 	}
 
-	private void eqUserName(String userName, Query dynamicQuery) {
+	private void likeUserName(String userName, Query dynamicQuery) {
 		if (userName != null) {
-			dynamicQuery.addCriteria(Criteria.where("userName").is(userName));
+			dynamicQuery.addCriteria(Criteria.where("userName").regex(".*" + userName + ".*"));
 		}
 	}
 
-	private void eqCompanyCode(String companyCode, Query dynamicQuery) {
+	private void likeCompanyCode(String companyCode, Query dynamicQuery) {
 		if (companyCode != null) {
-			dynamicQuery.addCriteria(Criteria.where("companyCode").is(companyCode));
+			dynamicQuery.addCriteria(Criteria.where("companyCode").regex(".*" + companyCode + ".*"));
 		}
 	}
 
@@ -91,4 +104,17 @@ public class LogRepositoryImpl implements CustomLogRepository {
 		}
 	}
 
+	private void betweenDate(LocalDate startDate, LocalDate endDate, Query dynamicQuery) {
+		if (startDate != null && endDate != null) {
+			String fromDate = startDate.atStartOfDay().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+			String toDate = endDate.plusDays(1L).atStartOfDay().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+
+			LocalDateTime s = LocalDateTime.parse(fromDate, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+			LocalDateTime e = LocalDateTime.parse(toDate, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+			dynamicQuery.addCriteria(Criteria
+					.where("sendDateTime")
+					.gte(s)
+					.lt(e));
+		}
+	}
 }

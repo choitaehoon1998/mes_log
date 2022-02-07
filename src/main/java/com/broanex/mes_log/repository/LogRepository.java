@@ -1,7 +1,7 @@
 package com.broanex.mes_log.repository;
 
 import com.broanex.mes_log.document.Log;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
-public interface LogRepository extends CrudRepository<Log, String>, CustomLogRepository {
+public interface LogRepository extends PagingAndSortingRepository<Log, String>, CustomLogRepository {
 }
