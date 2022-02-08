@@ -9,7 +9,6 @@ package com.broanex.mes_log.repository.impl;
 import com.broanex.mes_log.document.Log;
 import com.broanex.mes_log.repository.CustomLogRepository;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -83,31 +82,31 @@ public class LogRepositoryImpl implements CustomLogRepository {
 
 	private void eqExceptionClass(String exceptionClass, Query dynamicQuery) {
 		if (exceptionClass != null) {
-			dynamicQuery.addCriteria(Criteria.where("exceptionClass").is(exceptionClass));
+			dynamicQuery.addCriteria(Criteria.where("exceptionClass").regex(".*" + exceptionClass + ".*"));
 		}
 	}
 
 	private void eqExceptionMessage(String exceptionMessage, Query dynamicQuery) {
 		if (exceptionMessage != null) {
-			dynamicQuery.addCriteria(Criteria.where("exceptionMessage").is(exceptionMessage));
+			dynamicQuery.addCriteria(Criteria.where("exceptionMessage").regex(".*" + exceptionMessage + ".*"));
 		}
 	}
 
 	private void eqMethod(String method, Query dynamicQuery) {
 		if (method != null) {
-			dynamicQuery.addCriteria(Criteria.where("method").is(method));
+			dynamicQuery.addCriteria(Criteria.where("method").regex(".*" + method + ".*"));
 		}
 	}
 
 	private void eqRequestUri(String requestUri, Query dynamicQuery) {
 		if (requestUri != null) {
-			dynamicQuery.addCriteria(Criteria.where("requestUri").is(requestUri));
+			dynamicQuery.addCriteria(Criteria.where("requestUri").regex(".*" + requestUri + ".*"));
 		}
 	}
 
 	private void eqRemoteHost(String remoteHost, Query dynamicQuery) {
 		if (remoteHost != null) {
-			dynamicQuery.addCriteria(Criteria.where("remoteHost").is(remoteHost));
+			dynamicQuery.addCriteria(Criteria.where("remoteHost").regex(".*" + remoteHost + ".*"));
 		}
 	}
 
