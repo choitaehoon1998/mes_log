@@ -27,6 +27,7 @@ import static org.springframework.http.ResponseEntity.ok;
  * 3. /log/{id} [GET]   : log의 id를 받아, 있는 ID 일경우 ID에 해당하는 LOG 를 리턴하고, 그렇지 않을경우 NULL 을 리턴한다.
  */
 @RestController
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class LogController {
 
 	private final LogService logService;
