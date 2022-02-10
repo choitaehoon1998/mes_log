@@ -70,43 +70,43 @@ public class LogRepositoryImpl implements CustomLogRepository {
 
 	private void likeUserName(String userName, Query dynamicQuery) {
 		if (userName != null) {
-			dynamicQuery.addCriteria(Criteria.where("userName").regex(".*" + userName + ".*"));
+			dynamicQuery.addCriteria(Criteria.where("userName").regex(".*" + userName + ".*","i"));
 		}
 	}
 
 	private void likeCompanyCode(String companyCode, Query dynamicQuery) {
 		if (companyCode != null) {
-			dynamicQuery.addCriteria(Criteria.where("companyCode").regex(".*" + companyCode + ".*"));
+			dynamicQuery.addCriteria(Criteria.where("companyCode").regex(".*" + companyCode + ".*","i"));
 		}
 	}
 
 	private void eqExceptionClass(String exceptionClass, Query dynamicQuery) {
 		if (exceptionClass != null) {
-			dynamicQuery.addCriteria(Criteria.where("exceptionClass").regex(".*" + exceptionClass + ".*"));
+			dynamicQuery.addCriteria(Criteria.where("exceptionClass").regex(".*" + exceptionClass + ".*","i"));
 		}
 	}
 
 	private void eqExceptionMessage(String exceptionMessage, Query dynamicQuery) {
 		if (exceptionMessage != null) {
-			dynamicQuery.addCriteria(Criteria.where("exceptionMessage").regex(".*" + exceptionMessage + ".*"));
+			dynamicQuery.addCriteria(Criteria.where("exceptionMessage").regex(".*" + exceptionMessage + ".*","i"));
 		}
 	}
 
 	private void eqMethod(String method, Query dynamicQuery) {
 		if (method != null) {
-			dynamicQuery.addCriteria(Criteria.where("method").regex(".*" + method + ".*"));
+			dynamicQuery.addCriteria(Criteria.where("method").regex(".*" + method + ".*","i"));
 		}
 	}
 
 	private void eqRequestUri(String requestUri, Query dynamicQuery) {
 		if (requestUri != null) {
-			dynamicQuery.addCriteria(Criteria.where("requestUri").regex(".*" + requestUri + ".*"));
+			dynamicQuery.addCriteria(Criteria.where("requestUri").regex(".*" + requestUri + ".*","i"));
 		}
 	}
 
 	private void eqRemoteHost(String remoteHost, Query dynamicQuery) {
 		if (remoteHost != null) {
-			dynamicQuery.addCriteria(Criteria.where("remoteHost").regex(".*" + remoteHost + ".*"));
+			dynamicQuery.addCriteria(Criteria.where("remoteHost").regex(".*" + remoteHost + ".*","i"));
 		}
 	}
 
