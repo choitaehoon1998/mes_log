@@ -6,6 +6,7 @@ package com.broanex.mes_log.controller;
  * 관련 DB 테이블 : logs
  * */
 
+import com.broanex.mes_log.annotation.Auth;
 import com.broanex.mes_log.document.Log;
 import com.broanex.mes_log.service.LogService;
 import org.springframework.data.domain.Page;
@@ -36,13 +37,14 @@ public class LogController {
 		this.logService = logService;
 	}
 
-
+	@Auth
 	@PostMapping(value = "log")
 	public ResponseEntity<Log> logPost(@RequestBody HashMap<String, String> body) {
 		Log log = logService.createLog(body);
 		return ok(log);
 	}
 
+	@Auth
 	@GetMapping(value = "log", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Page<Log>> getLog(@RequestParam(required = false) String userName,
 	                                        @RequestParam(required = false) String companyCode,
@@ -71,6 +73,7 @@ public class LogController {
 		return ok(logList);
 	}
 
+	@Auth
 	@GetMapping(value = "log/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Log> getLogDetailInfo(@PathVariable(value = "id") String id) {
 		return ok(logService.findLogById(id));
