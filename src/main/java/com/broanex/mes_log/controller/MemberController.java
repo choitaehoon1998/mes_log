@@ -17,6 +17,8 @@ import java.util.Map;
 import static org.springframework.http.ResponseEntity.ok;
 
 @Controller
+//@CrossOrigin(methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE, RequestMethod.PUT, RequestMethod.OPTIONS}
+//		, originPatterns = "*", allowedHeaders = {"Content-Type", "X-PINGOTHER"}, maxAge = 86400, allowCredentials = "true")
 public class MemberController {
 
 	private final MemberService memberService;
@@ -51,9 +53,8 @@ public class MemberController {
 		return ok(map);
 	}
 
-	@PostMapping("/newAccessToken")
-	public ResponseEntity<Map<String, String>> updateToken(HttpServletRequest request) {
-		HashMap<String, String> map = memberService.updateToken(request);
-		return ok(map);
+	@GetMapping("/newAccessToken")
+	public ResponseEntity<HashMap<String, String>> updateToken(HttpServletRequest request) {
+		return memberService.updateToken(request);
 	}
 }

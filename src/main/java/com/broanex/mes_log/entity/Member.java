@@ -23,7 +23,7 @@ public class Member {
 		member.setEmail(dto.getEmail());
 		member.setPassword(dto.getPassword());
 		member.setName(dto.getName());
-		member.setApproved(false);
+		member.setApproved(dto.isApproved());
 		return member;
 	}
 }

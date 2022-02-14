@@ -1,5 +1,6 @@
 package com.broanex.mes_log.aspect;
 
+import com.broanex.mes_log.entity.Member;
 import com.broanex.mes_log.repository.MemberRepository;
 import com.broanex.mes_log.util.TokenUtils;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -11,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -35,13 +38,18 @@ public class AuthAop {
 			TokenUtils tokenUtils = new TokenUtils();
 			int id = tokenUtils.getId(accessToken);
 			if (memberRepository.existsById(id)) {
-				object = proceedingJoinPoint.proceed();
+				Member member = memberRepository.findById(id).get();
+				if (!member.isApproved()) {
+					return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+				} else {
+					object = proceedingJoinPoint.proceed();
+				}
 			} else {
-				throw new SecurityException();
+				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 			}
 		} catch (SignatureException | ExpiredJwtException | MalformedJwtException |
 				UnsupportedJwtException | IllegalArgumentException e) {
-			throw new JwtException("AccessToken Error");
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
 		return object;
 	}
