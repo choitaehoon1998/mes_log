@@ -39,7 +39,7 @@ public class AuthAop {
 			int id = tokenUtils.getId(accessToken);
 			if (memberRepository.existsById(id)) {
 				Member member = memberRepository.findById(id).get();
-				if (!member.isApproved()) {
+				if (!member.getIsApproved()) {
 					return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 				} else {
 					object = proceedingJoinPoint.proceed();

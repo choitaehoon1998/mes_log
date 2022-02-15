@@ -1,12 +1,12 @@
 package com.broanex.mes_log;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+//import org.junit.jupiter.api.Test;
+//import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+//@SpringBootTest
 class MesLogApplicationTests {
 
-    @Test
+//    @Test
     void contextLoads() {
     }
 

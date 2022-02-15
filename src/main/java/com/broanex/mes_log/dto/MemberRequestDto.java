@@ -9,5 +9,5 @@ public class MemberRequestDto {
 	private String email;
 	private String password;
 	private String name;
-	private boolean isApproved;
+	private Boolean isApproved;
 }
